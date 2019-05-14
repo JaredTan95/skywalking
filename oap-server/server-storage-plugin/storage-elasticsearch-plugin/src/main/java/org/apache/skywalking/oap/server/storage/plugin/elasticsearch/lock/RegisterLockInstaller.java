@@ -25,8 +25,10 @@ import org.apache.skywalking.oap.server.core.storage.StorageException;
 import org.apache.skywalking.oap.server.core.storage.annotation.StorageEntityAnnotationUtils;
 import org.apache.skywalking.oap.server.library.client.elasticsearch.ElasticSearchClient;
 import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.common.xcontent.*;
-import org.slf4j.*;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author peng-yongsheng
@@ -74,12 +76,8 @@ public class RegisterLockInstaller {
         settings.addProperty("index.refresh_interval", "1s");
 
         JsonObject mapping = new JsonObject();
-        mapping.add(ElasticSearchClient.TYPE, new JsonObject());
-
-        JsonObject type = mapping.get(ElasticSearchClient.TYPE).getAsJsonObject();
-
         JsonObject properties = new JsonObject();
-        type.add("properties", properties);
+        mapping.add("properties", properties);
 
         JsonObject column = new JsonObject();
         column.addProperty("type", "integer");
