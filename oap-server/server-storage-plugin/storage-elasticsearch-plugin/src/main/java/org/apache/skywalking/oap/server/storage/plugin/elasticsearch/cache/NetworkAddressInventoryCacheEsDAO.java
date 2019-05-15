@@ -28,7 +28,8 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author peng-yongsheng
@@ -65,7 +66,7 @@ public class NetworkAddressInventoryCacheEsDAO extends EsDAO implements INetwork
             searchSourceBuilder.size(1);
 
             SearchResponse response = getClient().search(NetworkAddressInventory.MODEL_NAME, searchSourceBuilder);
-            if (response.getHits().totalHits == 1) {
+            if (response.getHits().getTotalHits().value == 1) {
                 SearchHit searchHit = response.getHits().getAt(0);
                 return builder.map2Data(searchHit.getSourceAsMap());
             } else {
