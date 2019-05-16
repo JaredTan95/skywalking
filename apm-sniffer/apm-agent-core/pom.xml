@@ -34,6 +34,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jetty.version>9.4.2.v20170220</jetty.version>
+        <k8s.client.api.version>4.0.0</k8s.client.api.version>
         <grpc.version>1.14.0</grpc.version>
         <guava.version>20.0</guava.version>
         <bytebuddy.version>1.9.2</bytebuddy.version>
@@ -62,6 +63,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>io.kubernetes</groupId>
+            <artifactId>client-java</artifactId>
+            <version>${k8s.client.api.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.skywalking</groupId>
             <artifactId>apm-network</artifactId>
