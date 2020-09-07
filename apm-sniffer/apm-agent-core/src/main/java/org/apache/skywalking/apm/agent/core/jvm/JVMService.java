@@ -25,6 +25,7 @@ import org.apache.skywalking.apm.agent.core.boot.BootService;
 import org.apache.skywalking.apm.agent.core.boot.DefaultImplementor;
 import org.apache.skywalking.apm.agent.core.boot.DefaultNamedThreadFactory;
 import org.apache.skywalking.apm.agent.core.boot.ServiceManager;
+import org.apache.skywalking.apm.agent.core.conf.Config;
 import org.apache.skywalking.apm.agent.core.jvm.cpu.CPUProvider;
 import org.apache.skywalking.apm.agent.core.jvm.gc.GCProvider;
 import org.apache.skywalking.apm.agent.core.jvm.memory.MemoryProvider;
@@ -58,24 +59,14 @@ public class JVMService implements BootService, Runnable {
             new DefaultNamedThreadFactory("JVMService-produce"))
                                        .scheduleAtFixedRate(new RunnableWithExceptionProtection(
                                            this,
-                                           new RunnableWithExceptionProtection.CallbackWhenException() {
-                                               @Override
-                                               public void handle(Throwable t) {
-                                                   LOGGER.error("JVMService produces metrics failure.", t);
-                                               }
-                                           }
-                                       ), 0, 1, TimeUnit.SECONDS);
+                                           t -> LOGGER.error("JVMService produces metrics failure.", t)
+                                       ), 0, Config.Jvm.PERIOD, TimeUnit.SECONDS);
         sendMetricFuture = Executors.newSingleThreadScheduledExecutor(
             new DefaultNamedThreadFactory("JVMService-consume"))
                                     .scheduleAtFixedRate(new RunnableWithExceptionProtection(
                                         sender,
-                                        new RunnableWithExceptionProtection.CallbackWhenException() {
-                                            @Override
-                                            public void handle(Throwable t) {
-                                                LOGGER.error("JVMService consumes and upload failure.", t);
-                                            }
-                                        }
-                                    ), 0, 1, TimeUnit.SECONDS);
+                                        t -> LOGGER.error("JVMService consumes and upload failure.", t)
+                                    ), 0, Config.Jvm.PERIOD, TimeUnit.SECONDS);
     }
 
     @Override

@@ -20,7 +20,6 @@ package org.apache.skywalking.apm.agent.core.conf;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.skywalking.apm.agent.core.context.trace.TraceSegment;
 import org.apache.skywalking.apm.agent.core.logging.core.LogLevel;
 import org.apache.skywalking.apm.agent.core.logging.core.LogOutput;
@@ -207,6 +206,12 @@ public class Config {
          * The buffer size of collected JVM info.
          */
         public static int BUFFER_SIZE = 60 * 10;
+
+        /**
+         * The period in which the agent collect and report a jvm metric.
+         */
+        public static int PERIOD = 1;
+
     }
 
     public static class Buffer {
